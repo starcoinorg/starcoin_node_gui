@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hex/hex.dart';
 import 'package:starcoin_wallet/starcoin/starcoin.dart';
+import 'package:starcoin_wallet/wallet/host_manager.dart';
 import 'package:starcoin_wallet/wallet/node.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -397,7 +398,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
 
   void freshData() async {
     await Future.delayed(Duration(seconds: 5));
-    final node = Node(LOCALURL);
+    final node = Node(SimpleHostManager(Set.from([LOCALURL])));
     Timer.periodic(Duration(seconds: 10), (timer) async {
       if (startRequest) {
         final account = await node.defaultAccount();
@@ -472,7 +473,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
   }
 
   savePrivateKey() async {
-    final node = Node(LOCALURL);
+    final node = Node(SimpleHostManager(Set.from([LOCALURL])));
     final account = await node.defaultAccount();
     if (account == null) {
       return;
