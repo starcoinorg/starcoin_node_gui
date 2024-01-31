@@ -121,9 +121,9 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
             [
               "-n",
               "proxima",
-              // "--http-apis",
-              // "all",
-              // "--disable-ipc-rpc",
+              "--http-apis",
+              "all",
+              "--disable-ipc-rpc",
               // "--push-server-url",
               // "http://miner-metrics-pushgw.starcoin.org:9191/",
               // "--push-interval",
