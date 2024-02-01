@@ -7,7 +7,7 @@ final LTheme kLightTheme = new LTheme(mode: ThemeMode.Light,themeData: _buildLig
 
 TextTheme _buildTextTheme(TextTheme base,bool isDark) {
   return base.copyWith(
-    title: base.title.copyWith(
+    titleMedium: base.titleMedium.copyWith(
       fontFamily: 'GoogleSans',
       fontSize: 16.0,
       color: Color(0xFF42495A)

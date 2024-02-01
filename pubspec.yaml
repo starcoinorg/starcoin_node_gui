@@ -44,7 +44,7 @@ dependencies:
   starcoin_wallet:
     git:
       url: git://github.com/starcoinorg/starcoin.dart
-    #path: /Users/fanngyuan/Documents/workspace/starcoin_wallet.dart
+    # path: G:\\sources\\starcoin\\starcoin.dart
 
 dev_dependencies:
   flutter_test:

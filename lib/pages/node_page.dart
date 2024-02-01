@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hex/hex.dart';
 import 'package:starcoin_wallet/starcoin/starcoin.dart';
+import 'package:starcoin_wallet/wallet/host_manager.dart';
 import 'package:starcoin_wallet/wallet/node.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -15,7 +16,7 @@ import 'package:date_format/date_format.dart';
 import "package:path/path.dart" show join;
 import 'package:image/image.dart' as img;
 
-const LOCALURL = "http://localhost:9850";
+const LOCALURL = "localhost";
 
 class NodePage extends StatefulWidget {
   static const String routeName = Routes.main + "/index";
@@ -79,28 +80,54 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
     if (!startRequest) {
       onclick = () async {
         var command = "";
+        File file ;
         if (Platform.isMacOS) {
           final current = await DirectoryService.getCurrentDirectory();
           final dir = Directory.fromUri(Uri.parse(current));
           command = join(dir.path, 'Contents/Resources/starcoin');
+          file = File(command);
           //command = 'Contents/Resources/starcoin';
         }
         if (Platform.isWindows) {
           Directory current = Directory.current;
-          command = join(current.path, 'starcoin/starcoin');
+          command = join(current.path, 'starcoin/starcoin.exe');
+          file = File(command);
         }
+
+        if (!await file.exists()) {
+          // 文件不存在，显示警告对话框
+          showDialog(
+            context: context, 
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(StarcoinLocalizations.of(context).alertTitle),
+                content: Text(StarcoinLocalizations.of(context).fileNotFound + '$command'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(StarcoinLocalizations.of(context).confirm),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+          return ;
+        }
+
         process = await Process.start(
             command,
             [
               "-n",
-              "barnard",
+              "proxima",
               "--http-apis",
               "all",
               "--disable-ipc-rpc",
-              "--push-server-url",
-              "http://miner-metrics-pushgw.starcoin.org:9191/",
-              "--push-interval",
-              "5"
+              // "--push-server-url",
+              // "http://miner-metrics-pushgw.starcoin.org:9191/",
+              // "--push-interval",
+              // "5"
               //"--disable-mint-empty-block",
               //"false"
             ],
@@ -124,6 +151,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
         await freshData();
       };
     }
+
     var startButton = RaisedButton(
       padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 30, right: 30),
       color: blue,
@@ -198,12 +226,12 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
                             width: 50,
                           ),
                           Column(children: <Widget>[
-                            Text(StarcoinLocalizations.of(context).slogon,
+                            Text(StarcoinLocalizations.of(context).slogan,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                             Text(
                                 StarcoinLocalizations.of(context)
-                                        .offcialWebSite +
+                                        .officialWebsite +
                                     ': starcoin.org',
                                 style: TextStyle(color: blue, fontSize: 15)),
                           ]),
@@ -397,7 +425,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
 
   void freshData() async {
     await Future.delayed(Duration(seconds: 5));
-    final node = Node(LOCALURL);
+    final node = Node(SimpleHostManager(Set.from([LOCALURL])));
     Timer.periodic(Duration(seconds: 10), (timer) async {
       if (startRequest) {
         final account = await node.defaultAccount();
@@ -472,7 +500,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
   }
 
   savePrivateKey() async {
-    final node = Node(LOCALURL);
+    final node = Node(SimpleHostManager(Set.from([LOCALURL])));
     final account = await node.defaultAccount();
     if (account == null) {
       return;
