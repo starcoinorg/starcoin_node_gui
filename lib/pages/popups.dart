@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'localizations.dart';
@@ -10,6 +9,4 @@ showSnackBar(BuildContext context, String message) async {
   Scaffold.of(context).showSnackBar(snackBar);
 }
 
-Future<bool> showConfirmDialog(BuildContext context, String message) async {
-
-}
+Future<bool> showConfirmDialog(BuildContext context, String message) async {}

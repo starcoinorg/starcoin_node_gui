@@ -30,10 +30,24 @@ class StarcoinLocalizations {
   String get accountManage => _t("管理账户", "Manage account list");
   String get officialWebsite => _t("官网", "Official Website");
   String get privateKey => _t("保存私钥", "Save Private Key");
-  String get nodeNotRun => _t("节点没有运行，请先启动节点", "Node is not running, please start node first.");
-  String get fileNotFound => _t("Starcoin.exe 节点启动文件未找到，请重新配置节点文件,位置：", "Starcoin.exe file cannot found, Please check the file has exists!, Locate: ");
+  String get nodeNotRun =>
+      _t("节点没有运行，请先启动节点", "Node is not running, please start node first.");
+  String get fileNotFound => _t("Starcoin.exe 节点启动文件未找到，请重新配置节点文件,位置：",
+      "Starcoin.exe file cannot found, Please check the file has exists!, Locate: ");
   String get alertTitle => _t("警告", "alert");
-  String get inputPrivateKeyHint => _t("请输入私钥，用于导入账户", "Please input private key for import account");
+  String get nodeConsoleHint => _t("当节点启动时候这里会显示节点的输出信息",
+      "When the node starts, it will display the node's output information here.");
+
+  String get importAccountPage_AccountAddress_Label =>
+      _t("账户地址", "Account address");
+  String get importAccountPage_PrivateKey_Label => _t("私钥", "Private key");
+  String get importAccountPage_inputAccountAddressHint =>
+      _t("请输入账户地址", "Please input private key of account address");
+  String get importAccountPage_inputPrivateKeyHint =>
+      _t("请输入私钥，用于导入账户", "Please input private key for import account");
+
+  String get accountManager_SetDefaultQuery => _t("你确定要将%address%设置为默认账户吗",
+      "Are you sure to set the account %address% to default?");
 }
 
 class StarcoinLocalizationsDelegate

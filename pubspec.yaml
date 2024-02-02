@@ -42,9 +42,10 @@ dependencies:
   date_format: ^2.0.2
   image: ^2.1.14
   starcoin_wallet:
-    # git:
-    #  url: git://github.com/starcoinorg/starcoin.dart
-    path: G:/sources/starcoin/starcoin.dart
+      git:
+        url: git://github.com/starcoinorg/starcoin.dart
+        ref: b35c1dfda97fd4446f79e8fd3d9d30694bd0bc28
+     #path: G:/sources/starcoin/starcoin.dart
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,4 @@
-
 class Dimens {
-
   static const itemHeight = 55.0;
 
   static const padding = 16.0;
@@ -12,6 +10,4 @@ class Dimens {
   static const itemTitleLeading = itemIconSize + padding * 2;
 
   static const divider = 20.0;
-
-
 }

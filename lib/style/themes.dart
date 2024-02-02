@@ -1,17 +1,14 @@
-
-
 import 'package:flutter/material.dart';
 
-final LTheme kDarkTheme = new LTheme(mode: ThemeMode.Dark,themeData: _buildDarkTheme());
-final LTheme kLightTheme = new LTheme(mode: ThemeMode.Light,themeData: _buildLightTheme());
+final LTheme kDarkTheme =
+    new LTheme(mode: ThemeMode.Dark, themeData: _buildDarkTheme());
+final LTheme kLightTheme =
+    new LTheme(mode: ThemeMode.Light, themeData: _buildLightTheme());
 
-TextTheme _buildTextTheme(TextTheme base,bool isDark) {
+TextTheme _buildTextTheme(TextTheme base, bool isDark) {
   return base.copyWith(
     titleMedium: base.titleMedium.copyWith(
-      fontFamily: 'GoogleSans',
-      fontSize: 16.0,
-      color: Color(0xFF42495A)
-    ),
+        fontFamily: 'GoogleSans', fontSize: 16.0, color: Color(0xFF42495A)),
   );
 }
 
@@ -31,9 +28,9 @@ ThemeData _buildDarkTheme() {
     buttonTheme: const ButtonThemeData(
       textTheme: ButtonTextTheme.primary,
     ),
-    textTheme: _buildTextTheme(base.textTheme,true),
-    primaryTextTheme: _buildTextTheme(base.primaryTextTheme,true),
-    accentTextTheme: _buildTextTheme(base.accentTextTheme,true),
+    textTheme: _buildTextTheme(base.textTheme, true),
+    primaryTextTheme: _buildTextTheme(base.primaryTextTheme, true),
+    accentTextTheme: _buildTextTheme(base.accentTextTheme, true),
   );
 }
 
@@ -75,32 +72,27 @@ ThemeData _buildLightTheme() {
     hintColor: const Color(0xFFC3C7C9),
     // 禁用
     disabledColor: const Color(0xFFC3C8CC),
-    iconTheme: const IconThemeData(
-      color: primaryColor
-    ),
+    iconTheme: const IconThemeData(color: primaryColor),
     buttonTheme: const ButtonThemeData(
       textTheme: ButtonTextTheme.primary,
     ),
     selectedRowColor: Colors.transparent,
-    textTheme: _buildTextTheme(base.textTheme,false),
-    primaryTextTheme: _buildTextTheme(base.primaryTextTheme,false),
-    accentTextTheme: _buildTextTheme(base.accentTextTheme,false),
+    textTheme: _buildTextTheme(base.textTheme, false),
+    primaryTextTheme: _buildTextTheme(base.primaryTextTheme, false),
+    accentTextTheme: _buildTextTheme(base.accentTextTheme, false),
   );
 }
 
-enum ThemeMode {
-  Dark,Light
-}
+enum ThemeMode { Dark, Light }
 
 class LTheme {
-
   final ThemeMode mode;
 
   final ThemeData themeData;
 
-  LTheme({@required this.mode,@required this.themeData});
+  LTheme({@required this.mode, @required this.themeData});
 
-  bool isDark(){
+  bool isDark() {
     return this.mode == ThemeMode.Dark;
   }
 
@@ -113,4 +105,3 @@ class LTheme {
     return '$runtimeType($mode)($themeData)';
   }
 }
-

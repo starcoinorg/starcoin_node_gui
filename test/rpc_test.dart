@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -15,7 +14,13 @@ void main() {
   setUp(() async {
     Directory current = Directory.current;
     var command = join(current.path, 'starcoin/starcoin.exe');
-    process = await Process.start( command,  ["-n", "proxima",],  runInShell: true);
+    process = await Process.start(
+        command,
+        [
+          "-n",
+          "proxima",
+        ],
+        runInShell: true);
     processReadyCompleter = Completer<void>();
 
     process.stdout.transform(utf8.decoder).listen((data) {
@@ -30,7 +35,7 @@ void main() {
     // 等待进程就绪的信号或者超时
     await Future.any([
       processReadyCompleter.future,
-      Future.delayed(Duration(seconds: 100)) 
+      Future.delayed(Duration(seconds: 100))
     ]).catchError((_) => print('Process did not become ready in time.'));
   });
 

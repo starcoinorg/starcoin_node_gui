@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 
 class Routes {
-
   static const main = '/main';
 
   static const market = '/market';
@@ -10,7 +8,6 @@ class Routes {
   static const wallet = '/wallet';
 
   static const profile = '/profile';
-
 
   /// 创建一个平移变换
   /// 跳转过去查看源代码，可以看到有各种各样定义好的变换
@@ -24,6 +21,4 @@ class Routes {
       child: child, // child is the value returned by pageBuilder
     );
   }
-
-
 }

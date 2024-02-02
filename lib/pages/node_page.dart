@@ -35,13 +35,13 @@ class NodePage extends StatefulWidget {
 
 class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
   Process process;
-  String text = "";
+  String _processConsoleText = "";
   double balance = 0;
   String difficulty = "0";
   int blocks = 0;
-  int maxLines = 5;
+  int maxLines = 10;
   String time = "";
-  List<String> lines = List();
+  List<String> lines = [];
   String address = "0x00000000000000000000000000000000";
   String taskName = "";
   String percent = "";
@@ -58,6 +58,20 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   _scrollController.dispose();
+  //   super.dispose();
+  // }
+
+  // void scrollToBottom() {
+  //  _scrollController.animateTo(
+  //     _scrollController.position.maxScrollExtent,
+  //     duration: Duration(milliseconds: 300),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +95,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
     if (!startRequest) {
       onclick = () async {
         var command = "";
-        File file ;
+        File file;
         if (Platform.isMacOS) {
           final current = await DirectoryService.getCurrentDirectory();
           final dir = Directory.fromUri(Uri.parse(current));
@@ -98,11 +112,12 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
         if (!await file.exists()) {
           // 文件不存在，显示警告对话框
           showDialog(
-            context: context, 
+            context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(StarcoinLocalizations.of(context).alertTitle),
-                content: Text(StarcoinLocalizations.of(context).fileNotFound + '$command'),
+                content: Text(StarcoinLocalizations.of(context).fileNotFound +
+                    '$command'),
                 actions: <Widget>[
                   TextButton(
                     child: Text(StarcoinLocalizations.of(context).confirm),
@@ -114,7 +129,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
               );
             },
           );
-          return ;
+          return;
         }
 
         process = await Process.start(
@@ -145,7 +160,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
             tmpText = lines.sublist(lines.length - maxLines).join();
           }
           setState(() {
-              text = tmpText;
+            _processConsoleText = tmpText;
           });
         });
         startRequest = true;
@@ -174,7 +189,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
       onStop = () {
         process.kill(ProcessSignal.sigterm);
         setState(() {
-          text = "";
+          _processConsoleText = "";
           blocks = 0;
           startRequest = false;
         });
@@ -216,72 +231,79 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
                           width: 1, color: Color.fromARGB(120, 0, 255, 255)),
                     ),
                     child: Column(children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/starcoin-logo-fonts.png',
-                            width: 200,
-                          ),
-                          Image.asset(
-                            'assets/images/starcoin-miner.png',
-                            width: 50,
-                          ),
-                          Column(children: <Widget>[
-                            Text(StarcoinLocalizations.of(context).slogan,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15)),
-                            Text(
-                                StarcoinLocalizations.of(context)
-                                        .officialWebsite +
-                                    ': starcoin.org',
-                                style: TextStyle(color: blue, fontSize: 15)),
-                          ]),
-                          Expanded(flex: 1, child: Container(alignment: Alignment.centerRight)),
-                          Column(children: <Widget>[
-                            Tooltip(
+                      Row(children: <Widget>[
+                        Image.asset(
+                          'assets/images/starcoin-logo-fonts.png',
+                          width: 200,
+                        ),
+                        Image.asset(
+                          'assets/images/starcoin-miner.png',
+                          width: 50,
+                        ),
+                        Column(children: <Widget>[
+                          Text(StarcoinLocalizations.of(context).slogan,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15)),
+                          Text(
+                              StarcoinLocalizations.of(context)
+                                      .officialWebsite +
+                                  ': starcoin.org',
+                              style: TextStyle(color: blue, fontSize: 15)),
+                        ]),
+                        Expanded(
+                            flex: 1,
+                            child: Container(alignment: Alignment.centerRight)),
+                        Column(children: <Widget>[
+                          Tooltip(
+                              message:
+                                  StarcoinLocalizations.of(context).privateKey,
+                              child: IconButton(
+                                  icon: Image.asset(
+                                      'assets/images/starcoin-save-pk.png'),
+                                  iconSize: 60,
+                                  onPressed: () async {
+                                    if (!startRequest) {
+                                      await showSnackBar(
+                                          context,
+                                          StarcoinLocalizations.of(context)
+                                              .nodeNotRun);
+                                    } else {
+                                      await savePrivateKey();
+                                    }
+                                  })),
+                        ]),
+                        Column(children: <Widget>[
+                          Tooltip(
                               message: StarcoinLocalizations.of(context)
-                                  .privateKey,
+                                  .generatePoster,
                               child: IconButton(
-                                icon: Image.asset(
-                                    'assets/images/starcoin-save-pk.png'),
-                                iconSize: 60,
-                                onPressed: () async {
-                                  if (!startRequest) {
-                                    await showSnackBar(context, StarcoinLocalizations.of(context).nodeNotRun);
-                                  } else {
-                                    await savePrivateKey();
-                                  }
-                                })),
-                          ]),
-                          Column(children: <Widget>[
-                            Tooltip(
-                              message: StarcoinLocalizations.of(context).generatePoster,
+                                  icon: Image.asset(
+                                      'assets/images/starcoin-save.png'),
+                                  iconSize: 60,
+                                  onPressed: () async {
+                                    await btnAction_TakeScreenshot();
+                                  })),
+                        ]),
+                        Column(children: <Widget>[
+                          Tooltip(
+                              message: StarcoinLocalizations.of(context)
+                                  .accountManage,
                               child: IconButton(
-                                icon: Image.asset( 'assets/images/starcoin-save.png'),
-                                iconSize: 60,
-                                onPressed: () async {
-                                  await btnAction_TakeScreenshot();
-                                }
-                              )
-                            ),
-                          ]),
-                          // Column(children: <Widget>[
-                          //   Tooltip(
-                          //     message: StarcoinLocalizations.of(context).accountManage,
-                          //     child: IconButton(
-                          //       icon: Icon(Icons.person),
-                          //       color: blue,
-                          //       iconSize: 40,
-                          //       onPressed: () async {
-                          //         if (!startRequest) {
-                          //           await showSnackBar(context, StarcoinLocalizations.of(context).nodeNotRun);
-                          //           return ;
-                          //         }
-                          //         await btnAction_popupAccountManagePage(context);
-                          //       }
-                          //     )
-                          //   ),
-                          // ]),
+                                  icon: Icon(Icons.person),
+                                  color: blue,
+                                  iconSize: 40,
+                                  onPressed: () async {
+                                    if (!startRequest) {
+                                      await showSnackBar(
+                                          context,
+                                          StarcoinLocalizations.of(context)
+                                              .nodeNotRun);
+                                      return;
+                                    }
+                                    await btnAction_popupAccountManagePage(
+                                        context, address);
+                                  })),
+                        ]),
                         //   Expanded(
                         //       flex: 2,
                         //       child: Container(
@@ -451,8 +473,23 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[startButton, stopButton],
                           ),
+                          // Container(
+                          //     padding: EdgeInsets.all(4),
+                          //     //decoration: boxDecoration,
+                          //     color: Colors.green,
+                          //     height: double.infinity,
+                          //     child: Row(
+                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //       crossAxisAlignment: CrossAxisAlignment.center,
+                          //       children: <Widget> [
+                          //         buildSelectedTextItem(Colors.red),
+                          //         buildSelectedTextItem(Colors.green),
+                          //         buildSelectedTextItem(Colors.blue),
+                          //       ],
+                          //     )
+                          // )
                           new Text(
-                            text,
+                            _processConsoleText,
                             style: TextStyle(color: Colors.white),
                             maxLines: maxLines,
                           ),
@@ -480,27 +517,50 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
             AccountAddress.fromJson(account['address'].replaceAll("0x", ""));
         final balance = await node.balanceOfStc(address);
         final nodeInfo = await node.nodeInfo();
-        final totalDifficulty =
-            nodeInfo['peer_info']['chain_info']['block_info']['total_difficulty'];
+        final totalDifficulty = nodeInfo['peer_info']['chain_info']
+            ['block_info']['total_difficulty'];
 
         final syncProgress = await node.syncProgress();
         var taskNames;
         var percent = "0.00";
         if (syncProgress != null) {
           taskNames = syncProgress['current']['task_name'].split("::");
-          percent = syncProgress['current']['percent'].toStringAsFixed(2);
+          percent = syncProgress['current']['percent']?.toStringAsFixed(2);
         }
 
         setState(() {
           this.address = address.toString();
           this.balance = balance.toBigInt() / BigInt.from(1000000000);
           this.difficulty = totalDifficulty;
-          if(taskNames!=null)
+          if (taskNames != null)
             this.taskName = taskNames[taskNames.length - 1];
           this.percent = percent;
         });
       }
     });
+  }
+
+  Widget buildSelectedTextItem(Color color) {
+    return Expanded(
+      child: Container(
+        height: double.infinity,
+        color: color,
+        child: FittedBox(
+          fit: BoxFit.fill,
+          alignment: Alignment.center,
+          child: GestureDetector(
+            onTap: () {},
+            child: Text(
+              "1132131",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   btnAction_TakeScreenshot() async {
@@ -575,9 +635,12 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
   }
 }
 
-btnAction_popupAccountManagePage(BuildContext context) async {
+btnAction_popupAccountManagePage(
+    BuildContext context, String defaultAccount) async {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => AccountManagerPage()),
+    MaterialPageRoute(
+        builder: (context) =>
+            AccountManagerPage(defaultAccount: defaultAccount)),
   );
 }
