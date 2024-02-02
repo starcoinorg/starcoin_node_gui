@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,8 @@ void main() async {
 
   final sharedPrefs = await SharedPreferences.getInstance();
   final userName = sharedPrefs.getString("user_name");
+
+  // debugPaintSizeEnabled = true;
 
   Store<AppState> store = new Store(appReducer,
       initialState: new AppState(theme: kLightTheme, loadingVisible: false));

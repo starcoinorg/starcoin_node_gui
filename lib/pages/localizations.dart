@@ -25,12 +25,15 @@ class StarcoinLocalizations {
   String get currentDiff => _t("当前难度", "Current Difficulty");
   String get createNickyName => _t("创建昵称", "Create Nicky Name");
   String get confirm => _t("确认", "Confirm");
+  String get cancel => _t("取消", "Cancel");
   String get generatePoster => _t("生成海报", "Share Poster");
+  String get accountManage => _t("管理账户", "Manage account list");
   String get officialWebsite => _t("官网", "Official Website");
   String get privateKey => _t("保存私钥", "Save Private Key");
   String get nodeNotRun => _t("节点没有运行，请先启动节点", "Node is not running, please start node first.");
   String get fileNotFound => _t("Starcoin.exe 节点启动文件未找到，请重新配置节点文件,位置：", "Starcoin.exe file cannot found, Please check the file has exists!, Locate: ");
   String get alertTitle => _t("警告", "alert");
+  String get inputPrivateKeyHint => _t("请输入私钥，用于导入账户", "Please input private key for import account");
 }
 
 class StarcoinLocalizationsDelegate
