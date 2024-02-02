@@ -42,7 +42,7 @@ class StarcoinLocalizations {
       _t("账户地址", "Account address");
   String get importAccountPage_PrivateKey_Label => _t("私钥", "Private key");
   String get importAccountPage_inputAccountAddressHint =>
-      _t("请输入账户地址", "Please input private key of account address");
+      _t("请输入账户地址", "Please input account address");
   String get importAccountPage_inputPrivateKeyHint =>
       _t("请输入私钥，用于导入账户", "Please input private key for import account");
 
