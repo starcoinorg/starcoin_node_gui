@@ -136,7 +136,7 @@ class _NodePageState extends State<NodePage> with TickerProviderStateMixin {
             command,
             [
               "-n",
-              "proxima",
+              "vega",
               "--http-apis",
               "all",
               "--disable-ipc-rpc",
